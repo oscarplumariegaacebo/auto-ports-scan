@@ -21,6 +21,7 @@ read -p "IP to attack: " ip_v
 if [ "$ip_v" != "" ]
 then
     echo "IP: $ip_v"
+    nmap -sSV -p- --min-rate 5000 $ip_v -Pn
 else
     echo "IP NOT FOUND!"
 fi
