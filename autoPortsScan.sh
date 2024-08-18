@@ -12,15 +12,29 @@ gray="\e[0;37m\033[1m"
 
 
 function helpPanel(){
-    echo -e "\n${red}[*]${green} AUTO PORTS SCAN"
+    echo -e "\n${red}[*]${end}${purple} AUTO PORTS SCAN...${end}"
+    echo -e "\n${red}[*]${end}${green} Please enter your choice:   ${end}"
+    options=("Start Scan" "Exit")
+    select opt in "${options[@]}"
+    do 
+        case $opt in 
+            "Start Scan")
+                read -p "Name of workspace: " n_workspace
+                read -p "Enter IP to attack: " ip_v
+                if [ "$ip_v" != "" ]
+                then
+                    mkdir -p $n_workspace/{scan,objective} 
+                    sleep 2
+                    nmap -sSV -p- --min-rate 5000 $ip_v -Pn -oA ./$n_workspace/scan/ #save nmap result not working
+                else
+                    echo "IP NOT FOUND!"
+                fi
+                ;;
+            "Exit")
+                break
+                ;;
+        esac
+    done
 }
 
-helpPanel;
-
-read -p "IP to attack: " ip_v
-if [ "$ip_v" != "" ]
-then
-    echo "IP: $ip_v"
-else
-    echo "IP NOT FOUND!"
-fi
+helpPanel
